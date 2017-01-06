@@ -1,0 +1,62 @@
+#!/usr/bin/perl -w
+
+# add in openvpn.conf:
+# auth-user-pass-verify /etc/openvpn/auth-ldap.pl via-env
+
+use Net::LDAP;
+use strict;
+
+my $ldap;
+my $result;
+my $ARG;
+
+# Get username/password from file
+if ($ARG = shift @ARGV) {
+    if (!open (UPFILE, "<$ARG")) {
+        print "Could not open username/password file: $ARG\n";
+        exit 1;
+    }
+} else {
+    print "No username/password file specified on command line\n";
+    exit 1;
+}
+
+my $username = <UPFILE>;
+my $password = <UPFILE>;
+
+if (!$username || !$password) {
+    print "Username/password not found in file: $ARG\n";
+    exit 1;
+}
+
+chomp $username;
+chomp $password;
+close (UPFILE);
+
+my @opt_uri = split(/,/, '<%= node['masala_openvpn']['ldap_uri'] %>');
+my $opt_groupbase = "ou=groups,<%= node['openldap']['basedn'] %>";
+my $opt_groupfilter = "<%= node['masala_openvpn']['ldap_group_filter'] %>";
+my $opt_require_group = <%=
+  case node['masala_openvpn']['ldap_require_group']
+  when TrueClass
+    1
+  when FalseClass
+    0
+  else
+    1
+  end
+%>;
+
+my $opt_binddn = "uid=".$username.",ou=users,<%= node['openldap']['basedn'] %>";
+$ldap = Net::LDAP->new(@opt_uri) or die("connect @opt_uri failed!");
+$result = $ldap->bind($opt_binddn, password=>$password);
+$result->code and die($result->error);
+if ($opt_require_group) {
+  $result = $ldap->search(base=>$opt_groupbase, filter=>"(&(memberUid=$username)$opt_groupfilter)");
+  $result->code();
+  if ($result->count == 1) { exit 0; }
+  unless($result->count){ exit 1; }
+} else {
+ exit 0;
+}
+

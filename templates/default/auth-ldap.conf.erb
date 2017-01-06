@@ -1,0 +1,58 @@
+<LDAP>
+	# LDAP server URL
+	URL		<%= node['masala_openvpn']['ldap_uri'] %>
+
+        # Only anon bind supported for now
+	# Bind DN (If your LDAP server doesn't support anonymous binds)
+	# BindDN		uid=Manager,ou=People,dc=example,dc=com
+	# Bind Password
+	# Password	SecretPassword
+
+	# Network timeout (in seconds)
+	Timeout		15
+
+	# Follow LDAP Referrals (anonymously)
+	FollowReferrals no
+
+        # Rest of below for this section for TLS for LDAP, which is not presently supported
+	# Enable Start TLS
+	TLSEnable	no
+
+	# TLS CA Certificate File
+	#TLSCACertFile	/usr/local/etc/ssl/ca.pem
+
+	# TLS CA Certificate Directory
+	#TLSCACertDir	/etc/ssl/certs
+
+	# Client Certificate and key
+	# If TLS client authentication is required
+	#TLSCertFile	/usr/local/etc/ssl/client-cert.pem
+	#TLSKeyFile	/usr/local/etc/ssl/client-key.pem
+
+	# Cipher Suite
+	# The defaults are usually fine here
+	# TLSCipherSuite	ALL:!ADH:@STRENGTH
+</LDAP>
+
+<Authorization>
+	# Base DN
+	BaseDN		"ou=users,<%= node['openldap']['basedn'] %>"
+
+	# User Search Filter
+	SearchFilter	"(uid=%u)"
+
+	# Require Group Membership
+	RequireGroup	<%= node['masala_openvpn']['ldap_require_group'] %>
+
+	# Add non-group members to a PF table (disabled)
+	#PFTable	ips_vpn_users
+
+	<Group>
+		BaseDN		"ou=groups,<%= node['openldap']['basedn'] %>"
+		SearchFilter	"<%= node['masala_openvpn']['ldap_group_filter'] %>"
+		MemberAttribute	memberUid
+		# Add group members to a PF table (disabled)
+		#PFTable	ips_vpn_eng
+	</Group>
+</Authorization>
+
