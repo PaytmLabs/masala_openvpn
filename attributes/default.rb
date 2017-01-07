@@ -14,11 +14,7 @@ default['openvpn']['config']['client-cert-not-required']    = ''
 # for 2.4+ much better
 #default['openvpn']['config']['verify-client-cert']    = 'none'
 
-#default['openvpn']['config']['plugin']                = ['/usr/lib64/openvpn/plugin/lib/openvpn-auth-ldap.so ', node['openvpn']['fs_prefix'], '/etc/openvpn/auth/ldap.conf'].join
 default['openvpn']['config']['auth-user-pass-verify'] = '/etc/openvpn/auth-ldap.pl via-file'
-
-
-['/usr/lib64/openvpn/plugin/lib/openvpn-auth-ldap.so ', node['openvpn']['fs_prefix'], '/etc/openvpn/auth/ldap.conf'].join
 
 default['masala_openvpn']['ldap_uri']                = 'ldap://localhost:389'
 default['masala_openvpn']['ldap_require_group']      = true
