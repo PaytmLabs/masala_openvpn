@@ -20,6 +20,13 @@
 
 include_recipe 'masala_base::default'
 
+primary_if = node['network']['interfaces'][node['system']['primary_interface']]
+primary_addrs = primary_if['addresses']
+primary_addrs_ipv4 = primary_addrs.select { |_addr, attrs| attrs['family'] == 'inet' }
+primary_ip = primary_addrs_ipv4.keys.first
+
+node.default['openvpn']['config']['local'] = primary_ip
+
 # we disable the local self-sign and setup our own keys
 key_dir  = node['openvpn']['key_dir']
 directory key_dir do

@@ -87,7 +87,6 @@ suites:
         ldap_group_filter: '(|(cn=admins)(cn=notdummy))'
       openvpn:
         config:
-          local: 10.10.10.10
           route:
             - '192.168.4.0 255.255.255.0'
         push_routes:
