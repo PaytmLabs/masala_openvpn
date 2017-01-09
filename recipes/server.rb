@@ -47,3 +47,20 @@ end
 
 include_recipe 'openvpn::server'
 
+# register process monitor
+if node['masala_base']['dd_enable'] && !node['masala_base']['dd_api_key'].nil?
+  ruby_block "datadog-process-monitor-openvpn" do
+    block do
+      node.set['masala_base']['dd_proc_mon']['openvpn'] = {
+        search_string: ['openvpn'],
+        exact_match: true,
+        thresholds: {
+         critical: [1, 1]
+        }
+      }
+    end
+    notifies :run, 'ruby_block[datadog-process-monitors-render]'
+  end
+end
+
+
