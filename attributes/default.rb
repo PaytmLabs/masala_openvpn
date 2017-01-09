@@ -16,6 +16,8 @@ default['openvpn']['config']['client-cert-not-required']    = ''
 
 default['openvpn']['config']['auth-user-pass-verify'] = '/etc/openvpn/auth-ldap.pl via-file'
 
+default['openvpn']['enable_nat']                     = true
+
 default['masala_openvpn']['ldap_uri']                = 'ldap://localhost:389'
 default['masala_openvpn']['ldap_require_group']      = true
 default['masala_openvpn']['ldap_group_filter']       = '(|(cn=vpnusers)(cn=admin))'
