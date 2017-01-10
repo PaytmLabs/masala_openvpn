@@ -13,6 +13,7 @@ default['openvpn']['config']['crl-verify']            = nil
 default['openvpn']['config']['client-cert-not-required']    = ''
 # for 2.4+ much better
 #default['openvpn']['config']['verify-client-cert']    = 'none'
+default['openvpn']['config']['username-as-common-name']     = ''
 
 default['openvpn']['config']['auth-user-pass-verify'] = '/etc/openvpn/auth-ldap.pl via-file'
 
