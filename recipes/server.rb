@@ -27,6 +27,11 @@ primary_ip = primary_addrs_ipv4.keys.first
 
 node.default['openvpn']['config']['local'] = primary_ip
 
+# Not currently compatible with enforcing selinux
+selinux_state 'SELinux Permissive' do
+  action :permissive
+end
+
 # we disable the local self-sign and setup our own keys
 key_dir  = node['openvpn']['key_dir']
 directory key_dir do
