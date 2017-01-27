@@ -26,11 +26,7 @@ Untested but will take bugs on:
 
 Please also see the documentation for the cookbooks included by masala_openvpn. (See [metadata.rb](https://github.com/PaytmLabs/masala_openvpn/blob/develop/metadata.rb) file)
 
-This recipe will reference 
-
-default['masala_openvpn']['ldap_uri']                = 'ldap://localhost:389'
-default['masala_openvpn']['ldap_require_group']      = true
-default['masala_openvpn']['ldap_group_filter']       = '(|(cn=vpnusers)(cn=admin))'
+This recipe will reference attributes in the openvpn cookbooks as well.
 
 <table>
   <tr>
@@ -61,14 +57,14 @@ default['masala_openvpn']['ldap_group_filter']       = '(|(cn=vpnusers)(cn=admin
 
 ## Usage
 
-### masala_kafka::default
+### masala_openvpn::default
 
-Include `masala_kafka` in your node's `run_list`:
+Include `masala_openvpn` in your node's `run_list`:
 
 ```json
 {
   "run_list": [
-    "recipe[masala_kafka::default]"
+    "recipe[masala_openvpn::default]"
   ]
 }
 ```
@@ -76,7 +72,7 @@ Include `masala_kafka` in your node's `run_list`:
 ## License, authors, and how to contribute
 
 See:
-- [LICENSE](https://github.com/PaytmLabs/masala_kafka/blob/develop/LICENSE)
-- [MAINTAINERS.md](https://github.com/PaytmLabs/masala_kafka/blob/develop/MAINTAINERS.md)
-- [CONTRIBUTING.md](https://github.com/PaytmLabs/masala_kafka/blob/develop/CONTRIBUTING.md)
+- [LICENSE](https://github.com/PaytmLabs/masala_openvpn/blob/develop/LICENSE)
+- [MAINTAINERS.md](https://github.com/PaytmLabs/masala_openvpn/blob/develop/MAINTAINERS.md)
+- [CONTRIBUTING.md](https://github.com/PaytmLabs/masala_openvpn/blob/develop/CONTRIBUTING.md)
 
